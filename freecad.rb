@@ -3,8 +3,8 @@ require "formula"
 class Freecad < Formula
   homepage "http://sourceforge.net/projects/free-cad/"
   head "git://git.code.sf.net/p/free-cad/code"
-  url "http://downloads.sourceforge.net/project/free-cad/FreeCAD%20Source/freecad_0.15.4671.tar.gz"
-  sha256 "8dda8f355cb59866a55c9c6096f39a3ebc5347892284db4c305352cc9be03bbc"
+  url "http://downloads.sourceforge.net/project/free-cad/FreeCAD%20Source/FreeCAD-0.16.6703.tar.gz"
+  sha256 "6cc71ab4b0dc60b493d3aaa4b42f1ce1af9d4fcd539309ab0792804579e18e09"
 
   # Debugging Support
   option 'with-debug', 'Enable debugging build'
@@ -51,7 +51,7 @@ class Freecad < Formula
 
   # Allow building with internal pivy
   unless build.without? 'external-pivy'
-    depends_on 'pivy' => [:recommended, '--HEAD']
+    depends_on 'pivy' => [:recommended,]
   end
 
   # Optional Dependencies
