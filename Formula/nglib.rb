@@ -5,6 +5,12 @@ class Nglib < Formula
   sha256 "cb97f79d8f4d55c00506ab334867285cde10873c8a8dc783522b47d2bc128bf9"
   revision 1
 
+  bottle do
+    root_url "https://dl.bintray.com/freecad/bottles-freecad"
+    cellar :any
+    sha256 "a1f44d6d6dead3240d66ce0b8f24c68f5623ab60f96878815723227a2ed867fb" => :high_sierra
+  end
+
   depends_on "opencascade" => :recommended
 
   # Patch two main issues:
