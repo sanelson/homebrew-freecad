@@ -60,7 +60,10 @@ script:
     #  brew test-bot --root-url=$TAP_BOTTLE_ROOT_URL
     #fi
   #- brew test-bot --root-url=$TAP_BOTTLE_ROOT_URL
-  - brew test-bot --root-url=$TAP_BOTTLE_ROOT_URL ${FORMULA}
+  #- brew test-bot --root-url=$TAP_BOTTLE_ROOT_URL ${FORMULA}
+  #- brew test-bot --root-url=$TAP_BOTTLE_ROOT_URL Formula/${FORMULA}.rb
+  - cd Formula
+  - brew test-bot --root-url=$TAP_BOTTLE_ROOT_URL
   - ls *.bottle*.* || echo "==> No bottle created here"
 
 # Upload the bottle to staging area for this build
