@@ -1,9 +1,9 @@
 class Shiboken2 < Formula
   desc "GeneratorRunner plugin that outputs C++ code for CPython extensions"
   homepage "https://wiki.qt.io/PySide2"
-  url "http://code.qt.io/pyside/pyside-setup.git", :branch => "5.11.2"
-  version "5.11.2"
-  head "http://code.qt.io/pyside/pyside-setup.git", :branch => "5.11"
+  url "https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.12.0-src/pyside-setup-everywhere-src-5.12.0.tar.xz"
+  sha256 "890149628a6c722343d6498a9f7e1906ce3c10edcaef0cc53cd682c1798bef51"
+  head "http://code.qt.io/pyside/pyside-setup.git", :branch => "5.12"
 
   bottle do
     root_url "https://dl.bintray.com/freecad/bottles-freecad"
