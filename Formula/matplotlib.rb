@@ -35,19 +35,17 @@ end
 class Matplotlib < Formula
   desc "Python 2D plotting library"
   homepage "https://matplotlib.org"
-  url "https://files.pythonhosted.org/packages/50/27/57ab73d1b094540dec1a01d2207613248d8106f3c3f40e8d86f02eb8d18b/matplotlib-2.1.1.tar.gz"
-  sha256 "659f5e1aa0e0f01488c61eff47560c43b8be511c6a29293d7f3896ae17bd8b23"
+  url "https://files.pythonhosted.org/packages/eb/a0/31b6ba00bc4dcbc06f0b80d1ad6119a9cc3081ecb04a00117f6c1ca3a084/matplotlib-2.2.3.tar.gz"
+  sha256 "7355bf757ecacd5f0ac9dd9523c8e1a1103faadf8d33c22664178e17533f8ce5"
   head "https://github.com/matplotlib/matplotlib.git"
 
   bottle do
-    root_url "https://dl.bintray.com/freecad/bottles-freecad"
+    root_url "https://homebrew.bintray.com/bottles-freecad"
     cellar :any
-    sha256 "90c79d71e4d5720bc6c6f82b7675a0cdca49e419ca2c7c216acb1efabcfee051" => :high_sierra
-    sha256 "30446df7e53afa7d2f9968fe28db0da43dc4c17cebdef9d1e433290ae3dfaa1c" => :sierra
-    sha256 "e8257b66075bdd7b698be6306e0041a7cdaa10d3a627e0009d52d677cb56c9b9" => :el_capitan
+    sha256 "e5db6d40ff72bf417d099c5c45d04cc23d0fa69b4f5030d08fa7e2d9d04c97dd" => :sierra
   end
 
-  option "without-python", "Build without python2 support"
+  option "without-python", "Build without python 3 support"
   option "with-cairo", "Build with cairo backend support"
   option "with-pygtk", "Build with pygtk backend support (python2 only)"
   option "with-tex", "Build with tex support"
@@ -55,17 +53,18 @@ class Matplotlib < Formula
   deprecated_option "with-gtk3" => "with-gtk+3"
 
   requires_py2 = []
-  requires_py2 << "with-python" if build.with? "python@2"
+  requires_py2 << "with-python@2" if build.with? "python@2"
   requires_py3 = []
-  requires_py3 << "with-python3" if build.with? "python3"
+  requires_py3 << "with-python" if build.with? "python"
 
   depends_on NoExternalPyCXXPackage => :build
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "libpng"
-  depends_on "numpy" => requires_py3
+  depends_on "numpy"
 
-  depends_on "python@2" => :recommended
+  depends_on "python" => :recommended
+  depends_on "python@2" => :optional
 
   depends_on "gtk+3" => :optional
   depends_on "pygobject3" => requires_py3 if build.with? "gtk+3"
@@ -74,21 +73,15 @@ class Matplotlib < Formula
   depends_on "pygobject" if build.with? "pygtk"
   depends_on "ghostscript" => :optional
   depends_on "pyqt" => [:optional] + requires_py2
-  depends_on "python" => :optional
 
   if build.with? "cairo"
     depends_on "py2cairo" if build.with? "python@2"
-    depends_on "py3cairo" if build.with? "python3"
+    depends_on "py3cairo" if build.with? "python"
   end
 
   depends_on "tcl-tk" => :optional
 
   cxxstdlib_check :skip
-
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/e9/c3/5986db56819bd88e1a250cad2a97249211686b1b7b5d95f9ab64d403a2cb/setuptools-38.2.5.zip"
-    sha256 "b080f276cc868670540b2c03cee06cc14d2faf9da7bec0f15058d1b402c94507"
-  end
 
   resource "Cycler" do
     url "https://files.pythonhosted.org/packages/c2/4b/137dea450d6e1e3d474e1d873cd1d4f7d3beed7e0dc973b06e8e10d32488/cycler-0.10.0.tar.gz"
@@ -96,52 +89,48 @@ class Matplotlib < Formula
   end
 
   resource "pyparsing" do
-    url "https://files.pythonhosted.org/packages/3c/ec/a94f8cf7274ea60b5413df054f82a8980523efd712ec55a59e7c3357cf7c/pyparsing-2.2.0.tar.gz"
-    sha256 "0832bcf47acd283788593e7a0f542407bd9550a55a8a8435214a1960e04bcb04"
+    url "https://files.pythonhosted.org/packages/d0/09/3e6a5eeb6e04467b737d55f8bba15247ac0876f98fae659e58cd744430c6/pyparsing-2.3.0.tar.gz"
+    sha256 "f353aab21fd474459d97b709e527b5571314ee5f067441dc9f88e33eecd96592"
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/54/bb/f1db86504f7a49e1d9b9301531181b00a1c7325dc85a29160ee3eaa73a54/python-dateutil-2.6.1.tar.gz"
-    sha256 "891c38b2a02f5bb1be3e4793866c8df49c7d19baabf9c1bad62547e0b4866aca"
+    url "https://files.pythonhosted.org/packages/0e/01/68747933e8d12263d41ce08119620d9a7e5eb72c876a3442257f74490da0/python-dateutil-2.7.5.tar.gz"
+    sha256 "88f9287c0174266bb0d8cedd395cfba9c58e87e5ad86b2ce58859bc11be3cf02"
   end
 
   resource "pytz" do
-    url "https://files.pythonhosted.org/packages/60/88/d3152c234da4b2a1f7a989f89609ea488225eaea015bc16fbde2b3fdfefa/pytz-2017.3.zip"
-    sha256 "fae4cffc040921b8a2d60c6cf0b5d662c1190fe54d718271db4eb17d44a185b7"
+    url "https://files.pythonhosted.org/packages/cd/71/ae99fc3df1b1c5267d37ef2c51b7d79c44ba8a5e37b48e3ca93b4d74d98b/pytz-2018.7.tar.gz"
+    sha256 "31cb35c89bd7d333cd32c5f278fca91b523b0834369e757f4c5641ea252236ca"
   end
 
   resource "six" do
-    url "https://files.pythonhosted.org/packages/16/d8/bc6316cf98419719bd59c91742194c111b6f2e85abac88e496adefaf7afe/six-1.11.0.tar.gz"
-    sha256 "70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
+    url "https://files.pythonhosted.org/packages/dd/bf/4138e7bfb757de47d1f4b6994648ec67a51efe58fa907c1e11e350cddfca/six-1.12.0.tar.gz"
+    sha256 "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"
   end
 
   # python2 only
   resource "backports.functools_lru_cache" do
-    url "https://files.pythonhosted.org/packages/4e/91/0e93d9455254b7b630fb3ebe30cc57cab518660c5fad6a08aac7908a4431/backports.functools_lru_cache-1.4.tar.gz"
-    sha256 "31f235852f88edc1558d428d890663c49eb4514ffec9f3650e7f3c9e4a12e36f"
+    url "https://files.pythonhosted.org/packages/57/d4/156eb5fbb08d2e85ab0a632e2bebdad355798dece07d4752f66a8d02d1ea/backports.functools_lru_cache-1.5.tar.gz"
+    sha256 "9d98697f088eb1b0fa451391f91afb5e3ebde16bbdb272819fd091151fda4f1a"
   end
 
   # python2 only
   resource "subprocess32" do
-    url "https://files.pythonhosted.org/packages/28/91/d1283618eba07c4e8e18c58b3fd8b5ff3a8992fb652a3720535ddf2f2916/subprocess32-3.5.0rc1.tar.gz"
-    sha256 "2733defaf2cb24282fdc94cc9f2e0682308d4b20e4b7a6e384580410f314c9af"
+    url "https://files.pythonhosted.org/packages/be/2b/beeba583e9877e64db10b52a96915afc0feabf7144dcbf2a0d0ea68bf73d/subprocess32-3.5.3.tar.gz"
+    sha256 "6bc82992316eef3ccff319b5033809801c0c3372709c5f6985299c88ac7225c3"
   end
 
   def install
-    if MacOS.version == :el_capitan && MacOS::Xcode.installed? && MacOS::Xcode.version >= "8.0" \
-      || MacOS.version == :yosemite && MacOS::Xcode.installed? && MacOS::Xcode.version >= "7.0"
-      ENV.delete "SDKROOT"
-    end
-
     inreplace "setupext.py",
               "'darwin': ['/usr/local/'",
               "'darwin': ['#{HOMEBREW_PREFIX}'"
 
     Language::Python.each_python(build) do |python, version|
-      bundle_path = libexec/"lib/python#{version}/site-packages"
-      bundle_path.mkpath
-      ENV.prepend_path "PYTHONPATH", bundle_path
+      site_packages = libexec/"lib/python#{version}/site-packages"
+      site_packages.mkpath
+      ENV.prepend_path "PYTHONPATH", site_packages
 
+      # Collect python 2 vs 3 resources (some python 2 specific)
       res = if version.to_s.start_with? "2"
         resources.map(&:name).to_set
       else
@@ -149,10 +138,11 @@ class Matplotlib < Formula
       end
       res.each do |r|
         resource(r).stage do
-          system python, *Language::Python.setup_install_args(libexec)
+          system python, *Language::Python.setup_install_args(libexec),
+          "--install-lib", lib/"python#{version}/site-packages"
         end
       end
-      (lib/"python#{version}/site-packages/homebrew-matplotlib-bundle.pth").write "#{bundle_path}\n"
+      # (lib/"python#{version}/site-packages/homebrew-matplotlib.pth").write "#{site_packages}\n"
 
       system python, *Language::Python.setup_install_args(prefix)
     end
