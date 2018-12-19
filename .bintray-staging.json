@@ -2,7 +2,7 @@
 	"package": {
 		"repo": "travis-staging",
 		"name": "bottles",
-		"subject": "bblacey",
+		"subject": "freecad",
 		"desc": "FreeCAD Homebrew bottle staging",
 		"website_url": "http://www.freecad.org",
                 "vcs_url": "http://github.com/FreeCAD/FreeCAD-homebrew.git",

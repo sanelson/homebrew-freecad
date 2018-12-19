@@ -5,7 +5,6 @@
 #
 # Based on prior art here - https://gist.github.com/maelvalais/068af21911c7debc4655cdaa41bbf092
 
-#language: cpp
 language: ruby
 os: osx
 
@@ -16,7 +15,7 @@ osx_image:
 env:
   global:
   - BT_USER=bblacey  # BT_KEY must be set at REPO level
-  - TAP_BOTTLE_ROOT_URL=https://dl.bintray.com/bblacey/bottles-freecad
+  - TAP_BOTTLE_ROOT_URL=https://dl.bintray.com/freecad/bottles-freecad
   - HOMEBREW_BINTRAY_USER=${BT_USER}
   - HOMEBREW_BINTRAY_KEY=${BT_KEY}
   - HOMEBREW_NO_AUTO_UPDATE=yes
@@ -39,7 +38,7 @@ before_install:
   - /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   - travis_retry brew install libyaml gmp openssl@1.1 openssl jq
 
-# Install the travis-compatible test-bot
+# Install maelvalais' travis-compatible test-bot
 install:
   - brew tap maelvalais/test-bot
   - mkdir -p $(brew --repo $TRAVIS_REPO_SLUG)
@@ -74,15 +73,16 @@ jobs:
     name: "Publish bottles"
     os: linux
     env: OS=any_linux
+    #if: branch = master AND type IN (pull_request)
 
     # Download the staged bottles and publish to Bintray
     script:
     - |
-      bottleArtifacts=$(curl -u${BT_USER}:${BT_KEY} https://api.bintray.com/packages/${BT_USER}/travis-staging/bottles/versions/${TRAVIS_BUILD_NUMBER}/files?include_unpublished=1 | jq -r '.[].path')
+      bottleArtifacts=$(curl -u${BT_USER}:${BT_KEY} https://api.bintray.com/packages/freecad/travis-staging/bottles/versions/${TRAVIS_BUILD_NUMBER}/files?include_unpublished=1 | jq -r '.[].path')
       echo "Staged bottles artifacts: ${bottleArtifacts}"
       for stagedArtifact in ${bottleArtifacts}; do
          echo "Downloading unpublished staged bottling artifact $stagedArtifact"
-         travis_retry curl -LO -u${BT_USER}:${BT_KEY} https://dl.bintray.com/${BT_USER}/travis-staging/$stagedArtifact;
+         travis_retry curl -LO -u${BT_USER}:${BT_KEY} https://dl.bintray.com/freecad/travis-staging/$stagedArtifact;
       done
     - |
       if ls *.{json,tar.gz}; then
