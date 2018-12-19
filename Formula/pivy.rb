@@ -6,7 +6,7 @@ class Pivy < Formula
   version "0.5.0-4b84e76"
 
   bottle do
-    root_url "https://homebrew.bintray.com/bottles-freecad"
+    root_url "https://dl.bintray.com/freecad/bottles-freecad"
     cellar :any
     sha256 "b0057a5d48ce3c7a95bc652c3cc966420fd5e1223bead57f2ec7347f915eb47e" => :sierra
   end

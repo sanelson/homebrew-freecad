@@ -5,14 +5,6 @@ class Shiboken2 < Formula
   sha256 "890149628a6c722343d6498a9f7e1906ce3c10edcaef0cc53cd682c1798bef51"
   head "http://code.qt.io/pyside/pyside-setup.git", :branch => "5.12"
 
-  bottle do
-    root_url "https://dl.bintray.com/freecad/bottles-freecad"
-    cellar :any
-    sha256 "fcc89486726d1a58d851c03671307b872a107a404f0765fece1275c703f55603" => :high_sierra
-    sha256 "f85f04b58aeeab7c4bdba96028f239ecfc9956ada699b47b48403264b4da28e3" => :sierra
-    sha256 "3761a858d70aad57b3d3b40fe5563c1068f8a6735fd3e5b7d4c2673e8af0364f" => :el_capitan
-  end
-
   depends_on "cmake" => :build
   depends_on "llvm"
   depends_on "numpy"

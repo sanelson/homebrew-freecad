@@ -5,12 +5,6 @@ class Pyside2Tools < Formula
   sha256 "890149628a6c722343d6498a9f7e1906ce3c10edcaef0cc53cd682c1798bef51"
   head "http://code.qt.io/pyside/pyside-setup.git", :branch => "5.12"
 
-  bottle do
-    root_url "https://homebrew.bintray.com/bottles-freecad"
-    cellar :any
-    sha256 "60cddaffb89ef2a357d197149532cc08e239480cf5f4fdea5c1d40b0e005c77b" => :sierra
-  end
-
   depends_on "cmake" => :build
   depends_on "python@2" => :recommended
   depends_on "python" => :optional
