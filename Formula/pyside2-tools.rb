@@ -6,15 +6,16 @@ class Pyside2Tools < Formula
   head "http://code.qt.io/pyside/pyside-setup.git", :branch => "5.12"
 
   depends_on "cmake" => :build
-  depends_on "python@2" => :recommended
-  depends_on "python" => :optional
   depends_on "FreeCAD/freecad/pyside2"
+  depends_on "python" => :recommended
+  depends_on "python@2" => :recommended
 
   def install
     Language::Python.each_python(build) do |_python, version|
       mkdir "macbuild#{version}" do
         args = std_cmake_args
         args << "-DUSE_PYTHON_VERSION=#{version}"
+        args << "-DOSX_USE_LIBCPP=ON"
         args << "../sources/pyside2-tools"
 
         system "cmake", *args

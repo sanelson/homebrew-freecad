@@ -6,20 +6,14 @@ class Pyside2 < Formula
   head "http://code.qt.io/cgit/pyside/pyside-setup.git", :branch => "5.12"
 
   option "without-python", "Build without python 2 support"
-  depends_on "python@2" => :recommended
-  depends_on "python" => :optional
-
   option "without-docs", "Skip building documentation"
 
   depends_on "cmake" => :build
   depends_on "sphinx-doc" => :build if build.with? "docs"
+  depends_on "FreeCAD/freecad/shiboken2"
   depends_on "qt"
-
-  if build.with? "python"
-    depends_on "FreeCAD/freecad/shiboken2" => "with-python3"
-  else
-    depends_on "FreeCAD/freecad/shiboken2"
-  end
+  depends_on "python" => :recommended
+  depends_on "python@2" => :recommended
 
   def install
     ENV.cxx11
@@ -33,18 +27,13 @@ class Pyside2 < Formula
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
     Language::Python.each_python(build) do |_python, version|
-      pyhome = `python#{version}-config --prefix`.chomp
-      py_library = "#{pyhome}/lib/libpython#{version}.dylib"
-      py_include = "#{pyhome}/include/python#{version}"
-
       mkdir "macbuild#{version}" do
         args = std_cmake_args + %W[
-          -DPYTHON_EXECUTABLE=#{pyhome}/bin/python#{version}
-          -DPYTHON_LIBRARY=#{py_library}
-          -DPYTHON_INCLUDE_DIR=#{py_include}
+          -DUSE_PYTHON_VERSION=#{version}
           -DQT_SRC_DIR=#{qt.include}
           -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.opt_prefix}/include
           -DCMAKE_PREFIX_PATH=#{qt.prefix}/lib/cmake
+          -DOSX_USE_LIBCPP=ON
           -DBUILD_TESTS:BOOL=OFF
         ]
         args << "../sources/pyside2"

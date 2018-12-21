@@ -10,9 +10,8 @@ class Shiboken2 < Formula
   depends_on "numpy"
   depends_on "qt"
 
-  option "without-python", "Build without python 2 support"
+  depends_on "python" => :recommended
   depends_on "python@2" => :recommended
-  depends_on "python" => :optional
 
   def install
     qt = Formula["qt"]
@@ -27,6 +26,7 @@ class Shiboken2 < Formula
         args << "-DBUILD_TESTS=ON"
         args << "-DUSE_PYTHON_VERSION=#{version}"
         args << "-DCMAKE_PREFIX_PATH=#{qt.prefix}/lib/cmake/"
+        args << "-DOSX_USE_LIBCPP=ON"
         args << "../sources/shiboken2"
 
         system "cmake", *args
