@@ -16,7 +16,8 @@ class MedFile < Formula
   depends_on "gcc" => :build
   depends_on "swig" => :build
   depends_on "hdf5"
-  depends_on "python@2"
+  depends_on "python@2" => :recommended
+  depends_on "python" => :optional
 
   # Apply HDF5 1.10 support patch
   patch do

@@ -59,20 +59,19 @@ class Matplotlib < Formula
 
   depends_on NoExternalPyCXXPackage => :build
   depends_on "pkg-config" => :build
+
+  depends_on DvipngRequirement if build.with? "tex"
   depends_on "freetype"
   depends_on "libpng"
-  depends_on "numpy"
-
-  depends_on "python" => :recommended
-  depends_on "python@2" => :optional
-
+  depends_on "python@2" => :recommended
+  depends_on "ghostscript" => :optional
   depends_on "gtk+3" => :optional
   depends_on "pygobject3" => requires_py3 if build.with? "gtk+3"
   depends_on "pygtk" => :optional
-  depends_on DvipngRequirement if build.with? "tex"
   depends_on "pygobject" if build.with? "pygtk"
-  depends_on "ghostscript" => :optional
   depends_on "pyqt" => [:optional] + requires_py2
+
+  depends_on "python" => :optional
 
   if build.with? "cairo"
     depends_on "py2cairo" if build.with? "python@2"
@@ -106,6 +105,12 @@ class Matplotlib < Formula
   resource "six" do
     url "https://files.pythonhosted.org/packages/dd/bf/4138e7bfb757de47d1f4b6994648ec67a51efe58fa907c1e11e350cddfca/six-1.12.0.tar.gz"
     sha256 "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"
+  end
+
+  # Install numpy as a resource stanza so we can restrict it to python@2 (i.e. avoid numpy formula dependency in python 3)
+  resource "numpy" do
+    url "https://files.pythonhosted.org/packages/2d/80/1809de155bad674b494248bcfca0e49eb4c5d8bee58f26fe7a0dd45029e2/numpy-1.15.4.zip"
+    sha256 "3d734559db35aa3697dadcea492a423118c5c55d176da2f3be9c98d4803fc2a7"
   end
 
   # python2 only
@@ -169,9 +174,8 @@ class Matplotlib < Formula
 
   test do
     ENV["PYTHONDONTWRITEBYTECODE"] = "1"
-    ENV.prepend_path "PATH", Formula["python"].opt_libexec/"bin"
-
-    Language::Python.each_python(build) do |python, _|
+    ["python", "python2"].each do |python|
+      ENV.prepend_path "PATH", Formula[python].opt_libexec/"bin"
       system python, "-c", "import matplotlib"
     end
   end

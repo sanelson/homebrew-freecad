@@ -1,8 +1,7 @@
 class Freecad < Formula
   desc "Parametric 3D modeler"
-  homepage "http://www.freecadweb.org"
+  homepage "https://www.freecadweb.org"
   url "https://github.com/FreeCAD/FreeCAD/archive/0.17.tar.gz"
-  version "0.17"
   sha256 "ae017393476b6dc7f1192bcaf91ceedc2f9b791f2495307ce7c45efadb5266fb"
   head "https://github.com/FreeCAD/FreeCAD.git", :branch => "master"
 
@@ -16,14 +15,23 @@ class Freecad < Formula
   option "with-packaging-utils"
 
   # Build dependencies
-  depends_on "cmake"   => :build
   depends_on "ccache"  => :build
+  depends_on "cmake"   => :build
 
   # Required dependencies
-  depends_on :macos => :mavericks
+  depends_on "swig" => :build
+  depends_on "boost-python@1.59" # depends on python@2
+  depends_on "FreeCAD/freecad/coin"
+  depends_on "freecad/freecad/matplotlib"
+  depends_on "freecad/freecad/med-file"
+  depends_on "FreeCAD/freecad/nglib"
+  depends_on "FreeCAD/freecad/pivy"
   depends_on "freetype"
+  depends_on :macos => :sierra
+  depends_on "opencascade"
+  depends_on "orocos-kdl"
   depends_on "python@2"
-  depends_on "boost-python"
+  depends_on "vtk"
   depends_on "xerces-c"
   if build.with?("qt4")
     depends_on "cartr/qt4/qt@4"
@@ -34,15 +42,6 @@ class Freecad < Formula
     depends_on "FreeCAD/freecad/pyside2-tools"
     depends_on "webp"
   end
-  depends_on "opencascade"
-  depends_on "orocos-kdl"
-  depends_on "freecad/freecad/matplotlib"
-  depends_on "freecad/freecad/med-file"
-  depends_on "vtk"
-  depends_on "FreeCAD/freecad/nglib"
-  depends_on "FreeCAD/freecad/coin"
-  depends_on "FreeCAD/freecad/pivy"
-  depends_on "swig" => :build
 
   if build.with?("packaging-utils")
     depends_on "node"
@@ -78,6 +77,6 @@ class Freecad < Formula
     1. Amend your PYTHONPATH environmental variable to point to
        the FreeCAD directory
          export PYTHONPATH=#{bin}:$PYTHONPATH
-    EOS
+  EOS
   end
 end

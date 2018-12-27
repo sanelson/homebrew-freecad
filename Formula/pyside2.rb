@@ -12,8 +12,8 @@ class Pyside2 < Formula
   depends_on "sphinx-doc" => :build if build.with? "docs"
   depends_on "FreeCAD/freecad/shiboken2"
   depends_on "qt"
-  depends_on "python" => :recommended
   depends_on "python@2" => :recommended
+  depends_on "python" => :optional
 
   def install
     ENV.cxx11
@@ -50,7 +50,7 @@ class Pyside2 < Formula
   end
 
   test do
-    Language::Python.each_python(build) do |python, _version|
+    ["python", "python2"].each do |python|
       system python, "-c", "from PySide2 import QtCore"
     end
   end

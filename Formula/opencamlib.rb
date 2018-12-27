@@ -3,14 +3,14 @@ class Opencamlib < Formula
   homepage "http://www.anderswallin.net/CAM/"
   url "https://github.com/aewallin/opencamlib.git",
       :revision => "f8bd0a66ad4f1114a3caf84f430027c2da79c91d"
+  version "0.0.1" # TODO: Specify a real version here - note usage below
+  head "https://github.com/aewallin/opencamlib.git", :using => :git
+
   bottle do
     root_url "https://homebrew.bintray.com/bottles-freecad"
     cellar :any
     sha256 "d44870c9f77c902a238b5c4832fcb1c96957b09630c5cd59f96bfa30d72d7d1a" => :sierra
   end
-
-  version "0.0.1" # TODO: Specify a real version here - note usage below
-  head "https://github.com/aewallin/opencamlib.git", :using => :git
 
   option "with-openmp", "Build with support for OpenMP parallel processing"
 

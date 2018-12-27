@@ -3,6 +3,7 @@ class Nglib < Formula
   homepage "https://sourceforge.net/projects/netgen-mesher/"
   url "https://downloads.sourceforge.net/project/netgen-mesher/netgen-mesher/5.3/netgen-5.3.1.tar.gz"
   sha256 "cb97f79d8f4d55c00506ab334867285cde10873c8a8dc783522b47d2bc128bf9"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/freecad/bottles-freecad"

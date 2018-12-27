@@ -7,8 +7,8 @@ class Pyside2Tools < Formula
 
   depends_on "cmake" => :build
   depends_on "FreeCAD/freecad/pyside2"
-  depends_on "python" => :recommended
   depends_on "python@2" => :recommended
+  depends_on "python" => :optional
 
   def install
     Language::Python.each_python(build) do |_python, version|
