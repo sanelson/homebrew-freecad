@@ -38,7 +38,7 @@ class Opencamlib < Formula
       end
 
       cmake_args << "-DBOOST_ROOT=#{Formula["boost@1.59"].prefix}"
-      if build.with? "python"
+      if build.with? "python@2"
         cmake_args << "-DPYTHON_EXECUTABLE=#{Formula["python@2"].bin}/python2"
       else
         cmake_args << "-DBUILD_PY_LIB=0"
