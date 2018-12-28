@@ -2,7 +2,7 @@ class Opencamlib < Formula
   desc "Computer Aided Manufacturing libraries"
   homepage "http://www.anderswallin.net/CAM/"
   url "https://github.com/aewallin/opencamlib.git",
-      :revision => "f31b0a672c6850e6c830a0e314d9a75606359453"
+      :revision => "0a56da2f21049409f98bfcefba9fb435d742c425"
   version "0.0.1" # TODO: Specify a real version here - note usage below
   head "https://github.com/aewallin/opencamlib.git", :using => :git
 
@@ -18,9 +18,6 @@ class Opencamlib < Formula
   depends_on "llvm" => :build if build.with?("openmp")
   depends_on "boost-python@1.59" # TODO: Fails to locate files with homebrew boost 1.68, pin to 1.59
   depends_on "python@2" => :recommended
-
-  # Path https://github.com/aewallin/opencamlib/pull/36 until it is merged upstream
-  patch :DATA
 
   def install
     if build.with? "openmp"
@@ -54,34 +51,3 @@ class Opencamlib < Formula
     end
   end
 end
-__END__
-diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index f262c37..66f7647 100644
---- a/src/CMakeLists.txt
-+++ b/src/CMakeLists.txt
-@@ -169,9 +169,9 @@ ELSE(EXISTS ${OpenCamLib_SOURCE_DIR}/version_string.hpp)
-   include_directories(${CMAKE_CURRENT_BINARY_DIR})
-   include(version_string.cmake)
-   # now parse the git commit id:
--  STRING(REGEX REPLACE "([0-9][0-9]).*" "\\1" GIT_MAJOR_VERSION "${GIT_COMMIT_ID}" )
--  STRING(REGEX REPLACE "[0-9][0-9].([0-9][0-9])-.*" "\\1" GIT_MINOR_VERSION "${GIT_COMMIT_ID}" )
--  STRING(REGEX REPLACE "[0-9][0-9].[0-9][0-9]-(.*)-.*" "\\1" GIT_PATCH_VERSION "${GIT_COMMIT_ID}" )
-+  STRING(REGEX REPLACE "([0-9]+).*" "\\1" GIT_MAJOR_VERSION "${GIT_COMMIT_ID}" )
-+  STRING(REGEX REPLACE "[0-9]+.([0-9]+)-.*" "\\1" GIT_MINOR_VERSION "${GIT_COMMIT_ID}" )
-+  STRING(REGEX REPLACE "[0-9]+.[0-9]+-(.*)-.*" "\\1" GIT_PATCH_VERSION "${GIT_COMMIT_ID}" )
-   SET(MY_VERSION "${GIT_MAJOR_VERSION}.${GIT_MINOR_VERSION}.${GIT_PATCH_VERSION}" CACHE STRING "name")
-   SET(version_string ${CMAKE_CURRENT_BINARY_DIR}/version_string.hpp)
- ENDIF(EXISTS ${OpenCamLib_SOURCE_DIR}/version_string.hpp)
-@@ -319,7 +319,11 @@ if (BUILD_PY_LIB)
-     )
- 
-   message(STATUS "linking python binary ocl.so with boost: " ${Boost_PYTHON_LIBRARY})
--  target_link_libraries(ocl ocl_common ocl_dropcutter ocl_cutters  ocl_geo ocl_algo ${Boost_LIBRARIES}  ${PYTHON_LIBRARIES} -lboost_python -lboost_system)
-+  if (NOT APPLE)
-+    target_link_libraries(ocl ocl_common ocl_dropcutter ocl_cutters  ocl_geo ocl_algo ${Boost_LIBRARIES}  ${PYTHON_LIBRARIES} -lboost_python -lboost_system)
-+  else (NOT APPLE)
-+    target_link_libraries(ocl ocl_common ocl_dropcutter ocl_cutters  ocl_geo ocl_algo ${Boost_LIBRARIES} -lboost_python -lboost_system)
-+  endif (NOT APPLE)
-   # 
-   # this makes the lib name ocl.so and not libocl.so
-   set_target_properties(ocl PROPERTIES PREFIX "") 
