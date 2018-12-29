@@ -34,6 +34,7 @@ env:
 
 # Lay down a fresh Homebrew install
 before_install:
+  - python -c "import fcntl; fcntl.fcntl(1, fcntl.F_SETFL, 0)" # https://github.com/travis-ci/travis-ci/issues/8920
   - mkdir ~/usr_local && sudo mv /usr/local/* ~/usr_local
   - /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   - travis_retry brew install libyaml gmp openssl@1.1 openssl jq
