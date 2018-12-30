@@ -65,7 +65,8 @@ script:
   - ls *.bottle*.* || echo "==> No bottle created here"
 
 # Upload the bottle to staging area for this build
-after_script: true
+after_script:
+  sleep 10 # https://github.com/travis-ci/travis-ci/issues/6018
   #curl -T ${FORUMULA}-*bottle*.{tar.gz,json} https://api.bintray.com/content/$BT_USER/
 
 jobs:
