@@ -1,8 +1,10 @@
 class Nglib < Formula
   desc "C++ Library of NETGEN's tetrahedral mesh generator"
   homepage "https://sourceforge.net/projects/netgen-mesher/"
-  url "https://github.com/NGSolve/netgen.git", using: :git, tag: "v6.2.2007"
-  version "v6.2.2007"
+  url "https://github.com/NGSolve/netgen.git",
+      tag:      "v6.2.2101",
+      revision: "5e489319c60926daa836cecff39f0e92779032ba"
+  head "https://github.com/NGSolve/netgen.git"
 
   bottle do
     root_url "https://justyour.parts:8080/freecad"
@@ -11,23 +13,39 @@ class Nglib < Formula
   end
 
   depends_on "cmake" => :build
-
-  depends_on "#{@tap}/opencascade@7.5.0" => :required
+  depends_on "ninja" => :build
+  depends_on "opencascade"
 
   def install
-    inreplace "CMakeLists.txt", "find_package(OpenCasCade REQUIRED)",
-"find_package(OpenCasCade REQUIRED HINTS \""+Formula["#{@tap}/opencascade@7.5.0"].opt_lib+"/cmake/opencascade\")\n   set(OCC_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR})\n   message(${OpenCASCADE_INCLUDE_DIR})"
-    mkdir "Build" do
-      system "cmake", "-DUSE_PYTHON=OFF", "-DUSE_GUI=OFF", "-DUSE_OCC=ON",
-   '-DCMAKE_PREFIX_PATH="' + Formula["#{@tap}/opencascade@7.5.0"].opt_prefix + "/lib/cmake;", *std_cmake_args, ".."
-      system "make", "-j#{ENV.make_jobs}", "install"
+    args = std_cmake_args + %W[
+      -GNinja
+      -DUSE_PYTHON=OFF
+      -DUSE_GUI=OFF
+      -DUSE_OCC=ON
+      -DOCC_INCLUDE_DIR=#{Formula["opencascade"].include}/opencascade
+    ]
+
+    mkdir "build" do
+      system "cmake", *args, ".."
+      system "ninja", "install"
     end
 
     # The nglib installer doesn't include some important headers by default.
     # This follows a pattern used on other platforms to make a set of sub
     # directories within include/ to contain these headers.
-    subdirs = %w[csg general geom2d gprim include interface
-                 linalg meshing occ stlgeom visualization]
+    subdirs = %w[
+      csg
+      general
+      geom2d
+      gprim
+      include
+      interface
+      linalg
+      meshing
+      occ
+      stlgeom
+      visualization
+    ]
     subdirs.each do |subdir|
       (include/"netgen"/subdir).mkpath
       (include/"netgen"/subdir).install Dir.glob("libsrc/#{subdir}/*.{h,hpp}")
